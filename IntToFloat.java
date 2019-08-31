@@ -15,12 +15,15 @@ import java.io.*;
 
 public class IntToFloat {
 
-  private static final String usage = "IntToFloat [-i <inputfile>] [-o <outputfile>]";
+  private static final String USAGE = "IntToFloat [-i <inputfile>] [-o <outputfile>]";
   
   private InputStream in = System.in;    // set default input stream to stdin
   private OutputStream out = System.out; // set default output stream to stdout
+  private char separator = ',';          // set default separator char
   
   //****************************************************************************
+  
+  // TODO
   
   public IntToFloat(String[] args) {
     Lexer lexer;
@@ -41,18 +44,18 @@ public class IntToFloat {
   
   //****************************************************************************
   
-  // TODO
+  // Iterates through arguments and sets member variables.
   
   private void processArguments(String[] args) {
     String arg;
     for (int i = 0; i<args.length; i++) {
       arg = args[i];
       
-      if (arg.equals("-i") || arg.equals("/i")) {      // input file switch
+      if (isInputFileSwitch(arg)) {      // input file switch
         setInputStream(args, i);
         i++;
       }
-      else if (arg.equals("-o") || arg.equals("/o")) { // output file switch
+      else if (isOutputFileSwitch(arg)) { // output file switch
         setOutputStream(args, i);
         i++;
       }
@@ -61,7 +64,25 @@ public class IntToFloat {
   
   //****************************************************************************
   
-  // TODO
+  // Returns true if given string represents an input file switch.
+  
+  private boolean isInputFileSwitch(String str) {
+    return str.equals("-i") || str.equals("/i");
+  } // end isInputFileSwitch
+  
+  //****************************************************************************
+  
+  // Returns true if given string represents an output file switch.
+  
+  private boolean isOutputFileSwitch(String str) {
+    return str.equals("-o") || str.equals("/o");
+  } // end isOutputFileSwitch
+  
+  //****************************************************************************
+  
+  // Sets InputStream in to FileInputStream determined by file argument.
+  // If file argument is not present or file cannot be opened, displays
+  // error and exits.
   
   private void setInputStream(String[] args, int index) {
     // ensure the file was passed with switch
@@ -82,7 +103,9 @@ public class IntToFloat {
   
   //****************************************************************************
   
-  // TODO
+  // Sets OutputStream out to FileOutputStream determined by file argument.
+  // If file argument is not present or file cannot be opened, displays
+  // error and exits.
   
   private void setOutputStream(String[] args, int index) {
     // ensure the file was passed with switch
@@ -103,10 +126,10 @@ public class IntToFloat {
   
   //****************************************************************************
   
-  // TODO
+  // Display usage string.
   
   private void printUsage() {
-    System.err.format("usage: %s\n", usage);
+    System.err.format("usage: %s\n", USAGE);
   } // end printUsage
   
   //****************************************************************************
