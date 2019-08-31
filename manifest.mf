@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Created-By: CS380 Group 2
+Main-Class: IntToFloat
