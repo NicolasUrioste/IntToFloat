@@ -36,7 +36,7 @@ public class IntToFloat {
     parser = new Parser(lexer, out);
     
     try {
-      parser.translate();
+      parser.stmt();
     }
     catch (Exception e) {
       e.printStackTrace();

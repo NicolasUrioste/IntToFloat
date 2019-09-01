@@ -49,9 +49,37 @@ public class Parser {
   
   //****************************************************************************
   
+  public void stmt() throws IOException {
+    token = lexer.nextToken();
+    System.out.println("read token: " + token);
+    ints();
+    //match(TokenType.SENTINEL);
+  } // end stmt
+  
+  //****************************************************************************
+  
+  private void ints() throws IOException {
+    integer();
+    if (token.getTokenType() == TokenType.SEPARATOR) {
+      match(TokenType.SEPARATOR);
+      ints();
+    }
+  } // end ints
+  
+  //****************************************************************************
+  
+  private void integer() throws IOException {
+    System.out.println(((IntegerToken)token).getValue() + ".0");
+    match(TokenType.INTEGER);
+  } // end integer
+  
+  //****************************************************************************
+  
   private void match(TokenType tokenType) throws IOException {
-    if (token.getTokenType() == tokenType)
+    if (token.getTokenType() == tokenType) {
       token = lexer.nextToken();
+      System.out.println("read token: " + token);
+    }
     else
       System.err.println("Syntax error");
   } // end match
