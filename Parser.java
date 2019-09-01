@@ -6,7 +6,10 @@
 *
 * Parser.java
 *
-* TODO Description
+* Grammar for IntToFloat:
+*   stmt -> ints ;
+*   ints -> int , ints | int
+*   int  -> [0-9]+ { print(int.value) }
 *******************************************************************************/
 
 import java.io.*;
