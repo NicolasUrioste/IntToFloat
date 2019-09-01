@@ -32,19 +32,19 @@ public class Parser {
   public void translate() throws IOException {   
     do {
       token = lexer.nextToken();
-      if (token.getTokenType() == TokenType.INTEGER) {
+      if (token.tokenType == TokenType.INTEGER) {
         out.write(((IntegerToken)token).getValue().getBytes());
         out.write(".0 ".getBytes());
         out.write("\n".getBytes());
         System.out.println(token);
         token = lexer.nextToken();
         System.out.println(token);
-        if (token.getTokenType() == TokenType.SENTINEL)
+        if (token.tokenType == TokenType.SENTINEL)
           break;
         else
           match(TokenType.SEPARATOR);
       }
-    } while (token.getTokenType() != TokenType.SENTINEL);
+    } while (token.tokenType != TokenType.SENTINEL);
     
     out.write("\n".getBytes());
     out.flush();
@@ -63,7 +63,7 @@ public class Parser {
   
   private void ints() throws IOException {
     integer();
-    if (token.getTokenType() == TokenType.SEPARATOR) {
+    if (token.tokenType == TokenType.SEPARATOR) {
       match(TokenType.SEPARATOR);
       ints();
     }
@@ -79,7 +79,7 @@ public class Parser {
   //****************************************************************************
   
   private void match(TokenType tokenType) throws IOException {
-    if (token.getTokenType() == tokenType) {
+    if (token.tokenType == tokenType) {
       token = lexer.nextToken();
       System.out.println("read token: " + token);
     }

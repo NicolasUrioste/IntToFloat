@@ -11,20 +11,12 @@
 
 public class Token {
   
-  private final TokenType tokenType;
+  public final TokenType tokenType;
   
   //****************************************************************************
   
   public Token(TokenType tokenType) {
     this.tokenType = tokenType;
   } // end constructor
-  
-  //****************************************************************************
-  
-  // TODO
-  
-  public TokenType getTokenType() {
-    return tokenType;
-  } // end getTokenType
   
 } // end class Token

@@ -64,6 +64,7 @@ public class Lexer {
     for (; Character.isDigit(c); c = nextChar())
       tokenBuffer.append(c);
     
+    putBackChar();
     return new IntegerToken(tokenBuffer.toString());
   }
   
@@ -107,6 +108,12 @@ public class Lexer {
     lineBuffer.append(buffer[p]);
     return (char)buffer[p++];
   } // end nextChar
+  
+  //****************************************************************************
+  
+  private void putBackChar() {
+    p--;
+  } // end putbackChar
   
   //****************************************************************************
   
