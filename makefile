@@ -1,4 +1,4 @@
-IntToFloat.class: IntToFloat.java
+IntToFloat.class: *.java
 	javac IntToFloat.java
 
 build: *.class

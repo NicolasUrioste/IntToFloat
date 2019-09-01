@@ -17,6 +17,7 @@ public class Lexer {
   private static final int BUFFER_SIZE = 4096;
   
   private InputStream in;
+  private char separator = ',';
   private TokenType tokenType;
   private int line = 0, col = 0;
   private StringBuffer tokenBuffer = new StringBuffer();
@@ -31,7 +32,7 @@ public class Lexer {
 
   public Lexer(InputStream in) {
     this.in = in;
-    buffer[p] = 0; // force next call to next() to call read()
+    buffer[p] = 0; // force next call to nextChar() to fill buffer
   } // end constructor
   
   //****************************************************************************
@@ -44,6 +45,9 @@ public class Lexer {
     }
     else if (c == SENTINEL) {
       return new Token(TokenType.SENTINEL);
+    }
+    else if (c == separator) {
+      return new Token(TokenType.SEPARATOR);
     }
     else {
       System.err.println("Syntax Error encountered in next()");
@@ -60,11 +64,6 @@ public class Lexer {
     for (; Character.isDigit(c); c = nextChar())
       tokenBuffer.append(c);
     
-    // if non-whitespace char terminates integer throw SyntaxError
-    if (!Character.isWhitespace(c)) {
-      System.err.println("Found non-whitespace terminating integer");
-    }
-    
     return new IntegerToken(tokenBuffer.toString());
   }
   
@@ -73,7 +72,7 @@ public class Lexer {
   private void skipWhitespace() throws IOException {
     while (true) {
       c = nextChar();
-      
+    
       switch (c) {
         case ' ':
           col++;
@@ -84,6 +83,7 @@ public class Lexer {
         case '\n':
           line++;
           col = 0;
+          lineBuffer.setLength(0);
           break;
         case 0:
           c = SENTINEL;
@@ -104,7 +104,20 @@ public class Lexer {
       buffer[charsRead] = 0;
     }
     
+    lineBuffer.append(buffer[p]);
     return (char)buffer[p++];
   } // end nextChar
+  
+  //****************************************************************************
+  
+  public boolean setSeparator(char separator) {
+    if (Character.isDigit(separator) ||
+        Character.isWhitespace(separator) ||
+        separator == '-')
+      return false;
+    
+    this.separator = separator;
+    return true;
+  } // end setSeparator
   
 } // end class Lexer

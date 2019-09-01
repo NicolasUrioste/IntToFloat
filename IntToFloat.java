@@ -32,6 +32,7 @@ public class IntToFloat {
     processArguments(args); // sets in, out, and separator
     
     lexer = new Lexer(in);
+    lexer.setSeparator(separator);
     parser = new Parser(lexer, out);
     
     try {

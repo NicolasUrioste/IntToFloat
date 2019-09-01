@@ -10,6 +10,7 @@
 *******************************************************************************/
 
 public enum TokenType {
+  INTEGER,
   SENTINEL,
-  INTEGER
+  SEPARATOR
 } // end enum Token
