@@ -40,7 +40,7 @@ public class Lexer {
   public Token nextToken() throws IOException {
     skipWhitespace();
     
-    if (Character.isDigit(c)) {
+    if (Character.isDigit(c) || c == '-') {
       return nextIntegerToken();
     }
     else if (c == SENTINEL) {
@@ -50,7 +50,7 @@ public class Lexer {
       return new Token(TokenType.SEPARATOR);
     }
     else {
-      System.err.println("Syntax Error encountered in next()");
+      System.err.println("Syntax Error encountered in next():" + line + ", " + col);
       return new Token(TokenType.SENTINEL);
     }
   } // end next
@@ -60,26 +60,28 @@ public class Lexer {
   private IntegerToken nextIntegerToken() throws IOException {
     tokenBuffer.setLength(0); // clear tokenBuffer
     
+    if (c == '-')             // collect optional minus sign
+      tokenBuffer.append(c);
+    
     // continue collecting characters as long as they are digits
     for (; Character.isDigit(c); c = nextChar())
       tokenBuffer.append(c);
     
-    putBackChar();
+    putBackChar();            // replace last non-digit read
     return new IntegerToken(tokenBuffer.toString());
   }
   
   //****************************************************************************
   
   private void skipWhitespace() throws IOException {
-    while (true) {
-      c = nextChar();
+    while (Character.isWhitespace(c = nextChar()));
     
-      switch (c) {
+      /*switch (c) {
         case ' ':
           col++;
           break;
         case '\t':
-          col++; // align col
+          col += 8 - (col % 8); // align col to tab width
           break;
         case '\n':
           line++;
@@ -90,8 +92,8 @@ public class Lexer {
           c = SENTINEL;
         default:
           return;
-      }
-    }
+      }*/
+    
   } // end skipWhitespace
   
   //****************************************************************************
@@ -104,6 +106,19 @@ public class Lexer {
       p = 0;
       buffer[charsRead] = 0;
     }
+    System.out.println("buffer[p]= " + (char)buffer[p] + " col= " + col);
+    switch (buffer[p]) {
+      case '\t':
+        col += 8 - (col % 8); // align col to tab width
+        break;
+      case '\n':
+        line++;
+        col = 0;
+        lineBuffer.setLength(0);
+        break;
+      default:
+        col++;
+    }
     
     lineBuffer.append(buffer[p]);
     return (char)buffer[p++];
@@ -113,6 +128,7 @@ public class Lexer {
   
   private void putBackChar() {
     p--;
+    col--;
   } // end putbackChar
   
   //****************************************************************************
