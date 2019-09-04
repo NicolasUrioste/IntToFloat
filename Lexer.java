@@ -99,14 +99,30 @@ public class Lexer {
   //****************************************************************************
   
   private char nextChar() throws IOException {
-    if (buffer[p] == 0) {
-      if ((charsRead = in.read(buffer, 0, BUFFER_SIZE-1)) == -1)
-        return 0;
-        
-      p = 0;
-      buffer[charsRead] = 0;
-    }
+    if (buffer[p] == 0)
+      fillBuffer();
+    
     System.out.println("buffer[p]= " + (char)buffer[p] + " col= " + col);
+    
+    updateLocation();
+    
+    lineBuffer.append(buffer[p]);
+    return (char)buffer[p++];
+  } // end nextChar
+  
+  //****************************************************************************
+  
+  private void fillBuffer() {
+    if ((charsRead = in.read(buffer, 0, BUFFER_SIZE-1)) == -1)
+      buffer[p] = 0;   // !!!!!! TODO TODO TODO WORK ON THIS 
+      
+    p = 0;
+    buffer[charsRead] = 0;
+  } // end fillBuffer
+  
+  //****************************************************************************
+  
+  private void updateLocation() {
     switch (buffer[p]) {
       case '\t':
         col += 8 - (col % 8); // align col to tab width
@@ -119,10 +135,7 @@ public class Lexer {
       default:
         col++;
     }
-    
-    lineBuffer.append(buffer[p]);
-    return (char)buffer[p++];
-  } // end nextChar
+  } // end updateLocation
   
   //****************************************************************************
   
