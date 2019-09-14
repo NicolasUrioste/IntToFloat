@@ -55,7 +55,7 @@ public class Lexer {
     }
   } // end next
   
-  //****************************************************************************
+  //******************************************************************************
   
   private IntegerToken nextIntegerToken() throws IOException {
     tokenBuffer.setLength(0); // clear tokenBuffer
