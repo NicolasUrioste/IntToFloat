@@ -112,7 +112,7 @@ public class Lexer {
   
   //****************************************************************************
   
-  private void fillBuffer() {
+  private void fillBuffer() throws IOException {
     if ((charsRead = in.read(buffer, 0, BUFFER_SIZE-1)) == -1)
       buffer[p] = 0;   // !!!!!! TODO TODO TODO WORK ON THIS 
       
