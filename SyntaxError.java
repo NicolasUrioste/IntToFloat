@@ -12,7 +12,7 @@
 public class SyntaxError {
   
   public SyntaxError(String message, String line, int lineNumber, int colNumber) {
-    super(message);
+    super();
   } // end constructor
   
 } // end class SyntaxError
