@@ -136,7 +136,7 @@ public class IntToFloat {
   //****************************************************************************
   
   public static void main(String[] args) {
-    new IntToFloat(args);
+    IntToFloat Result = new IntToFloat(args);
   } // end main
   
 } // end class IntToFloat
